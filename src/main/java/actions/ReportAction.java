@@ -13,7 +13,6 @@ import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
 import services.ReportService;
-
 /**
  * 日報に関する処理を行うActionクラス
  *
@@ -65,6 +64,24 @@ public class ReportAction extends ActionBase {
         forward(ForwardConst.FW_REP_INDEX);
     }
 
+    /**
+     * 新規登録画面を表示する
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void entryNew() throws ServletException, IOException {
+
+        putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+
+        //日報情報の空インスタンスに、日報の日付＝今日の日付を設定する
+        ReportView rv = new ReportView();
+        rv.setReportDate(LocalDate.now());
+        putRequestScope(AttributeConst.REPORT, rv); //日付のみ設定済みの日報インスタンス
+
+        //新規登録画面を表示
+        forward(ForwardConst.FW_REP_NEW);
+
+    }
 
     /**
      * 新規登録を行う
@@ -123,24 +140,7 @@ public class ReportAction extends ActionBase {
         }
     }
 
-    /**
-     * 新規登録画面を表示する
-     * @throws ServletException
-     * @throws IOException
-     */
-    public void entryNew() throws ServletException, IOException {
 
-        putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-
-        //日報情報の空インスタンスに、日報の日付＝今日の日付を設定する
-        ReportView rv = new ReportView();
-        rv.setReportDate(LocalDate.now());
-        putRequestScope(AttributeConst.REPORT, rv); //日付のみ設定済みの日報インスタンス
-
-        //新規登録画面を表示
-        forward(ForwardConst.FW_REP_NEW);
-
-    }
 }
 
 
